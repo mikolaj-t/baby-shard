@@ -1,8 +1,9 @@
 package repository
 
 import (
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"time"
+
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 var _ KeyValueStore = (*ETCDRepository)(nil)
@@ -25,11 +26,11 @@ func (e *ETCDRepository) Close() error {
 }
 
 func (e *ETCDRepository) GetValue(key string) (*string, error) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (e *ETCDRepository) SetValue(key, value string) error {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }

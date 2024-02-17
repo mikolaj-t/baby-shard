@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
-	"github.com/mikolaj-t/baby-shard/internal/discovery"
-	"github.com/mikolaj-t/baby-shard/internal/proxy"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/mikolaj-t/baby-shard/internal/discovery"
+	"github.com/mikolaj-t/baby-shard/internal/proxy"
 )
 
 func main() {
 	s := proxy.Server{}
 	s.Start()
+
 	ds := discovery.Server{}
 	ds.Start()
 
