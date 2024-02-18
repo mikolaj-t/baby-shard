@@ -1,8 +1,9 @@
 package repository
 
 import (
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"time"
+
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 var _ KeyValueStore = (*ETCDRepository)(nil)
@@ -15,7 +16,7 @@ func (e *ETCDRepository) Connect() error {
 	var err error
 	e.client, err = clientv3.New(clientv3.Config{
 		Endpoints:   []string{"localhost:2379", "localhost:22379", "localhost:32379"},
-		DialTimeout: 5 * time.Second,
+		DialTimeout: time.Second,
 	})
 	return err
 }
@@ -25,11 +26,12 @@ func (e *ETCDRepository) Close() error {
 }
 
 func (e *ETCDRepository) GetValue(key string) (*string, error) {
-	//TODO implement me
+	_ = key
 	panic("implement me")
 }
 
 func (e *ETCDRepository) SetValue(key, value string) error {
-	//TODO implement me
+	_ = key
+	_ = value
 	panic("implement me")
 }

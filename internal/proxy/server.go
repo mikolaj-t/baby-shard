@@ -1,8 +1,10 @@
 package proxy
 
 import (
-	"fmt"
 	"net/http"
+	"time"
+
+	"github.com/rs/zerolog/log"
 )
 
 type Server struct {
@@ -11,13 +13,16 @@ type Server struct {
 func (s Server) Start() {
 	handler := http.NewServeMux()
 	handler.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Printf("Received a request: %+v\n", r)
+		log.Info().Msgf("Received a request: %+v", r)
 		w.WriteHeader(http.StatusOK)
 	})
 	server := http.Server{
-		Handler: handler,
-		Addr:    ":8080",
+		Handler:           handler,
+		Addr:              ":8080",
+		ReadHeaderTimeout: time.Second,
 	}
-	go server.ListenAndServe()
-	fmt.Printf("Listening on %s\n", server.Addr)
+	go func() {
+		_ = server.ListenAndServe()
+	}()
+	log.Info().Msgf("Listening on %s", server.Addr)
 }
