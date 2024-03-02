@@ -10,3 +10,6 @@ lint:
 
 run:
 	go run ./cmd/main.go
+
+run-test-servers:
+	go run ./example/ping_server.go 1000
