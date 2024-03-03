@@ -5,16 +5,28 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/mikolaj-t/baby-shard/internal/repository"
+
 	"github.com/mikolaj-t/baby-shard/internal/discovery"
 	"github.com/mikolaj-t/baby-shard/internal/proxy"
 	"github.com/rs/zerolog/log"
 )
 
 func main() {
-	s := proxy.Server{}
+	repo := &repository.BasicKV{}
+	err := repo.Connect()
+	if err != nil {
+		return
+	}
+
+	s := proxy.Server{
+		Repo: repo,
+	}
 	s.Start()
 
-	ds := discovery.Server{}
+	ds := discovery.Server{
+		Repo: repo,
+	}
 	ds.Start()
 
 	sig := make(chan os.Signal, 1)

@@ -1,6 +1,8 @@
 package repository
 
 import (
+	"context"
+	"fmt"
 	"time"
 
 	clientv3 "go.etcd.io/etcd/client/v3"
@@ -25,13 +27,24 @@ func (e *ETCDRepository) Close() error {
 	return e.client.Close()
 }
 
-func (e *ETCDRepository) GetValue(key string) (*string, error) {
-	_ = key
-	panic("implement me")
+func (e *ETCDRepository) GetValue(ctx context.Context, key string) (*string, error) {
+	res, err := e.client.Get(ctx, key)
+	if err != nil {
+		return nil, err
+	}
+	if res.Count != 1 {
+		return nil, fmt.Errorf("etcd returned %d keys instead of 1", res.Count)
+	}
+	val := string(res.Kvs[0].Key)
+	return &val, nil
 }
 
-func (e *ETCDRepository) SetValue(key, value string) error {
-	_ = key
-	_ = value
+func (e *ETCDRepository) SetValue(ctx context.Context, key, value string) error {
+	_, err := e.client.Put(ctx, key, value)
+	return err
+}
+
+func (e *ETCDRepository) Count(_ context.Context) (int, error) {
+	// TODO implement me
 	panic("implement me")
 }
